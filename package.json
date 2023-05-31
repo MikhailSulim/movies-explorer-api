@@ -1,0 +1,27 @@
+{
+  "name": "movies-explorer-api",
+  "version": "1.0.0",
+  "description": "Backend of YP Diploma",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "lint": "npx eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MikhailSulim/movies-explorer-api.git"
+  },
+  "author": "Mikhail Sulim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MikhailSulim/movies-explorer-api/issues"
+  },
+  "homepage": "https://github.com/MikhailSulim/movies-explorer-api#readme",
+  "devDependencies": {
+    "eslint": "^8.41.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "nodemon": "^2.0.22"
+  }
+}
