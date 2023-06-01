@@ -87,4 +87,4 @@ const movieSchema = new mongoose.Schema(
 );
 
 // создаём модель
-module.exports = mongoose.model('card', movieSchema);
+module.exports = mongoose.model('movie', movieSchema);
