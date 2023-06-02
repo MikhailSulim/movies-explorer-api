@@ -3,6 +3,8 @@ const { CastError, ValidationError } = require('mongoose').Error;
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
+const { CODE_CREATED_201 } = require('../utils/constants');
+
 const Movie = require('../models/movie');
 
 exports.getMovies = (req, res, next) => {
@@ -23,7 +25,7 @@ exports.createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
@@ -39,7 +41,7 @@ exports.createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
@@ -47,7 +49,7 @@ exports.createMovie = (req, res, next) => {
     owner: userId,
   })
     .then((movie) => movie.populate('owner'))
-    .then((movie) => res.status(201).send(movie))
+    .then((movie) => res.status(CODE_CREATED_201).send(movie))
     .catch((err) => {
       if (err instanceof ValidationError) {
         const errorMessage = Object.values(err.errors)
