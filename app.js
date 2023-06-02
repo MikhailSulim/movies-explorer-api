@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 // мидлвэры
 const cookieParser = require('cookie-parser');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const errorsHandler = require('./middlewares/errorsHandler');
 
 const app = express();
 const routes = require('./routes/index');
@@ -22,6 +23,7 @@ app.use(routes); // все роуты
 
 app.use(errorLogger); // подключаем логгер ошибок
 
+app.use(errorsHandler); // централизованный обработчик ошибок
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
