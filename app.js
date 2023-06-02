@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 
 // мидлвэры
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorsHandler = require('./middlewares/errorsHandler');
+const limiter = require('./middlewares/limiter');
 
 const app = express();
 const routes = require('./routes/index');
@@ -16,6 +18,10 @@ app.use(cookieParser()); // подключаем парсер кук как ми
 mongoose.connect(DB_URL, {
   // useNewUrlParser: true,
 }); // с новых версий не обязательно добавлять опции
+
+// мидлвэры безопасности
+app.use(helmet()); // для автоматической проставки заголовков безопасности
+app.use(limiter); // для предотвращения ddos aтак
 
 app.use(requestLogger); // подключаем логгер запросов
 
