@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+// мидлвэры
 const cookieParser = require('cookie-parser');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 const routes = require('./routes/index');
@@ -14,7 +16,11 @@ mongoose.connect(DB_URL, {
   // useNewUrlParser: true,
 }); // с новых версий не обязательно добавлять опции
 
-app.use(routes);
+app.use(requestLogger); // подключаем логгер запросов
+
+app.use(routes); // все роуты
+
+app.use(errorLogger); // подключаем логгер ошибок
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
