@@ -4,14 +4,17 @@ const router = require('express').Router();
 const users = require('./users');
 const movies = require('./movies');
 
+// импорт валидаторов celebrate
+const { userSignupValidator, userSigninValidator } = require('../middlewares/validtors/usersValidator');
+
 // импорт мидлвэра авторизации
 const auth = require('../middlewares/auth');
 const { createUser, login, logout } = require('../controllers/users');
 const NotFoundError = require('../errors/NotFoundError');
 
 // роуты без авторизации
-router.post('/signup', createUser);
-router.post('/signin', login);
+router.post('/signup', userSignupValidator, createUser);
+router.post('/signin', userSigninValidator, login);
 
 // роуты с авторизацией
 router.use('/users', auth, users);

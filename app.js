@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+require('dotenv').config(); // для работы с переменными окружения
+
 // мидлвэры
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');

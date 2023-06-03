@@ -64,7 +64,7 @@ exports.createMovie = (req, res, next) => {
 
 exports.deleteMovie = (req, res, next) => {
   // функция удаляет сохранённый фильм по id
-  const { movieId } = req.params;
+  const { _id: movieId } = req.params;
   const { _id: userId } = req.user;
 
   Movie.findById(movieId)
