@@ -18,6 +18,6 @@ router.post('/', movieDataValidator, createMovie); // создаёт фильм 
 // country, director, duration, year, description, image,
 // trailer, nameRU, nameEN и thumbnail, movieId
 
-router.delete('/_id', movieIdValidator, deleteMovie); // удаляет сохранённый фильм по id
+router.delete('/:_id', movieIdValidator, deleteMovie); // удаляет сохранённый фильм по id
 
 module.exports = router;
