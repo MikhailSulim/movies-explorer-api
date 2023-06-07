@@ -24,4 +24,4 @@
 
 IP 51.250.82.210
 
-Backend 
+Backend https://api.sulim.yp-diploma.nomoredomains.rocks
