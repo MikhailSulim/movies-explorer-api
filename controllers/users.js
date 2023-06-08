@@ -8,7 +8,15 @@ const ConflictError = require('../errors/ConflictError');
 const User = require('../models/user');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
-const { CODE_CREATED_201 } = require('../utils/constants');
+const {
+  CODE_CREATED_201,
+  CODE_DUPLICATE_ERROR_11000,
+  MSG_USER_NOT_FOUND,
+  MSG_INCORRECT_USER_DATA,
+  MSG_USER_ALREADY_EXISTS,
+  MSG_LOGOUT,
+  SECRET_CODE,
+} = require('../utils/constants');
 
 exports.getCurrentUser = (req, res, next) => {
   // функция возвращающая информацию о пользователе
@@ -29,7 +37,7 @@ exports.updateUser = (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь с данным id не найден');
+        throw new NotFoundError(MSG_USER_NOT_FOUND);
       }
       res.send(user);
     })
@@ -38,7 +46,7 @@ exports.updateUser = (req, res, next) => {
         const errorMessage = Object.values(err.errors)
           .map((error) => error.message)
           .join(' ');
-        next(new BadRequestError(`Некорректные данные пользователя при обновлении профиля ${errorMessage}`));
+        next(new BadRequestError(`${MSG_INCORRECT_USER_DATA} ${errorMessage}`));
       } else {
         next(err);
       }
@@ -63,8 +71,8 @@ exports.createUser = (req, res, next) => {
       res.status(CODE_CREATED_201).send(user);
     })
     .catch((err) => {
-      if (err.code === 11000) {
-        next(new ConflictError('Пользователь с таким email уже существует'));
+      if (err.code === CODE_DUPLICATE_ERROR_11000) {
+        next(new ConflictError(MSG_USER_ALREADY_EXISTS));
         return;
       }
 
@@ -72,7 +80,7 @@ exports.createUser = (req, res, next) => {
         const errorMessage = Object.values(err.errors)
           .map((error) => error.message)
           .join(' ');
-        next(new BadRequestError(`Некорректные данные пользователя: ${errorMessage}`));
+        next(new BadRequestError(`${MSG_INCORRECT_USER_DATA} ${errorMessage}`));
       } else {
         next(err);
       }
@@ -88,7 +96,7 @@ exports.login = (req, res, next) => {
       // создадим токен
       const token = jwt.sign(
         { _id: user._id }, // пейлоуд токена
-        NODE_ENV === 'production' ? JWT_SECRET : 'another-secret-key', // секретный ключ подписи
+        NODE_ENV === 'production' ? JWT_SECRET : SECRET_CODE, // секретный ключ подписи
         { expiresIn: '7d' }, // токен просрочится через 7 дней
       );
       res
@@ -104,5 +112,5 @@ exports.login = (req, res, next) => {
 
 exports.logout = (req, res) => {
   // функция выхода из системы авторизации
-  res.clearCookie('jwt').send({ message: 'Вы вышли из системы' });
+  res.clearCookie('jwt').send({ message: MSG_LOGOUT });
 };

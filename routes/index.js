@@ -11,6 +11,7 @@ const { userSignupValidator, userSigninValidator } = require('../middlewares/val
 const auth = require('../middlewares/auth');
 const { createUser, login, logout } = require('../controllers/users');
 const NotFoundError = require('../errors/NotFoundError');
+const { MSG_URL_NOT_FOUND } = require('../utils/constants');
 
 // роуты без авторизации
 router.post('/signup', userSignupValidator, createUser);
@@ -23,7 +24,7 @@ router.get('/signout', auth, logout);
 
 // роут для любых ругих/несуществующих путей
 router.use('*', (req, res, next) => {
-  next(new NotFoundError('Запрашиваемый URL не существует'));
+  next(new NotFoundError(MSG_URL_NOT_FOUND));
 });
 
 module.exports = router;

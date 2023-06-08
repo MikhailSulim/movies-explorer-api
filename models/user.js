@@ -7,6 +7,7 @@ const isEmail = require('validator/lib/isEmail');
 
 // импорт кастомного класса ошибки
 const UnauthorizedError = require('../errors/UnauthorizedError');
+const { MSG_INCORRECT_AUTH_DATA } = require('../utils/constants');
 
 // создаём схему
 const userSchema = new mongoose.Schema(
@@ -60,14 +61,14 @@ userSchema.statics.findUserByCredentials = function (email, password) {
       // не нашёлся — отклоняем промис
       if (!user) {
         return Promise.reject(
-          new UnauthorizedError('Неправильные почта или пароль'),
+          new UnauthorizedError(MSG_INCORRECT_AUTH_DATA),
         );
       }
       // нашёлся — сравниваем хеши
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
           return Promise.reject(
-            new UnauthorizedError('Неправильные почта или пароль'),
+            new UnauthorizedError(MSG_INCORRECT_AUTH_DATA),
           );
         }
         return user;

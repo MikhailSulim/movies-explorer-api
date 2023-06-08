@@ -3,7 +3,14 @@ const { CastError, ValidationError } = require('mongoose').Error;
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
-const { CODE_CREATED_201 } = require('../utils/constants');
+const {
+  CODE_CREATED_201,
+  MSG_INCORRECT_MOVIE_DATA,
+  MSG_MOVIE_NOT_FOUND,
+  MSG_DONT_DELETE_MOVIE,
+  MSG_MOVIE_DELETED,
+  MSG_INCORRECT_MOVIE_ID,
+} = require('../utils/constants');
 
 const Movie = require('../models/movie');
 
@@ -55,7 +62,7 @@ exports.createMovie = (req, res, next) => {
         const errorMessage = Object.values(err.errors)
           .map((error) => error.message)
           .join(' ');
-        next(new BadRequestError(`Некорректные данные фильма: ${errorMessage}`));
+        next(new BadRequestError(`${MSG_INCORRECT_MOVIE_DATA} ${errorMessage}`));
       } else {
         next(err);
       }
@@ -70,17 +77,17 @@ exports.deleteMovie = (req, res, next) => {
   Movie.findById(movieId)
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError('Фильм с данным id не найден');
+        throw new NotFoundError(MSG_MOVIE_NOT_FOUND);
       }
       if (userId !== movie.owner.toString()) {
-        throw new ForbiddenError('Вы не можете удалить этот фильм');
+        throw new ForbiddenError(MSG_DONT_DELETE_MOVIE);
       }
       return Movie.findByIdAndRemove(movieId)
-        .then(() => res.send({ message: 'Фильм удалён' }));
+        .then(() => res.send({ message: MSG_MOVIE_DELETED }));
     })
     .catch((err) => {
       if (err instanceof CastError) {
-        next(new BadRequestError('Некорректный id фильма'));
+        next(new BadRequestError(MSG_INCORRECT_MOVIE_ID));
       } else {
         next(err);
       }
