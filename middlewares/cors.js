@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE'; // Значение для заголовка Access-Control-Allow-Methods по умолчанию (разрешены все типы запросов)
   const requestHeaders = req.headers['access-control-request-headers']; // сохраняем список заголовков исходного запроса
 
-  res.header('Acces-Control-Allow-Credentials', true); // указывает, разрешена ли отправка файлов cookie
+  res.header('Access-Control-Allow-Credentials', true); // указывает, разрешена ли отправка файлов cookie
 
   // проверяем, что источник запроса есть среди разрешённых
   if (allowedCors.includes(origin)) {
