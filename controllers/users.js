@@ -30,8 +30,8 @@ exports.getCurrentUser = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
   // функция обновляющая информацию о пользователе
   const { _id: userId } = req.user;
-  const { name } = req.body;
-  User.findByIdAndUpdate(userId, { name }, {
+  const { name, email } = req.body;
+  User.findByIdAndUpdate(userId, { name, email }, {
     new: true,
     runValidators: true,
   })
