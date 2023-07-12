@@ -15,8 +15,9 @@ const {
 const Movie = require('../models/movie');
 
 exports.getMovies = (req, res, next) => {
-  // функция возвращает все сохранённые текущим  пользователем фильмы
-  Movie.find({})
+  // функция возвращает все сохранённые текущим пользователем фильмы
+  const owner = req.user._id;
+  Movie.find({ owner })
     .then((movies) => res.send(movies))
     .catch(next);
 };
